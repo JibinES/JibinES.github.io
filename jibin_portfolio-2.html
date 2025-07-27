@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jibin ES - Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background-color: #ffffff;
+            scroll-behavior: smooth;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            color: #e4e4e7;
+            background-color: #0a0a0a;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e5e7eb;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        body.dark-mode .navbar {
+            background: rgba(10, 10, 10, 0.95);
+            border-bottom: 1px solid #27272a;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 0 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #6b7280;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #111827;
+            background-color: #f3f4f6;
+        }
+
+        body.dark-mode .nav-link {
+            color: #a1a1aa;
+        }
+
+        body.dark-mode .nav-link:hover,
+        body.dark-mode .nav-link.active {
+            color: #fafafa;
+            background-color: #18181b;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 2rem;
+            z-index: 1001;
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            background: #e5e7eb;
+        }
+
+        body.dark-mode .theme-toggle {
+            background: #18181b;
+            border: 1px solid #27272a;
+            color: #fafafa;
+        }
+
+        body.dark-mode .theme-toggle:hover {
+            background: #27272a;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Sections */
+        .section {
+            min-height: 100vh;
+            padding: 6rem 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-content {
+            width: 100%;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: #111827;
+            text-align: center;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .section-title {
+            color: #fafafa;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .profile-image {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #e5e7eb;
+            justify-self: center;
+            transition: border-color 0.3s ease;
+        }
+
+        body.dark-mode .profile-image {
+            border: 4px solid #27272a;
+        }
+
+        .about-text h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: #111827;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .about-text h1 {
+            color: #fafafa;
+        }
+
+        .about-text .subtitle {
+            font-size: 1.2rem;
+            color: #6b7280;
+            margin-bottom: 2rem;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .about-text .subtitle {
+            color: #a1a1aa;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            color: #374151;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .about-text p {
+            color: #d4d4d8;
+        }
+
+        .contact-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1.2rem;
+            background-color: #f3f4f6;
+            color: #111827;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .contact-link:hover {
+            background-color: #e5e7eb;
+            transform: translateY(-2px);
+        }
+
+        body.dark-mode .contact-link {
+            background-color: #18181b;
+            color: #fafafa;
+            border: 1px solid #27272a;
+        }
+
+        body.dark-mode .contact-link:hover {
+            background-color: #27272a;
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background-color: #18181b;
+            border: 1px solid #27272a;
+            border-radius: 1rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: #3f3f46;
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .project-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fafafa;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-date {
+            color: #a1a1aa;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .project-description {
+            color: #d4d4d8;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tech-tag {
+            background-color: #27272a;
+            color: #d4d4d8;
+            padding: 0.3rem 0.7rem;
+            border-radius: 0.3rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Education Section */
+        .education-timeline {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .education-item {
+            background-color: #18181b;
+            border: 1px solid #27272a;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .education-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fafafa;
+            margin-bottom: 0.5rem;
+        }
+
+        .education-institution {
+            color: #a1a1aa;
+            margin-bottom: 1rem;
+        }
+
+        .education-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .education-score {
+            background-color: #27272a;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            color: #fafafa;
+        }
+
+        /* Current Role Section */
+        .role-card {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 1rem;
+            padding: 3rem;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .role-card {
+            background-color: #18181b;
+            border: 1px solid #27272a;
+        }
+
+        .role-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .role-title {
+            color: #fafafa;
+        }
+
+        .role-company {
+            color: #6b7280;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .role-company {
+            color: #a1a1aa;
+        }
+
+        .role-period {
+            color: #9ca3af;
+            margin-bottom: 2rem;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .role-period {
+            color: #71717a;
+        }
+
+        .role-description {
+            color: #374151;
+            line-height: 1.7;
+            text-align: left;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .role-description {
+            color: #d4d4d8;
+        }
+
+        /* Certifications Section */
+        .certifications-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cert-card {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.8rem;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .cert-card:hover {
+            transform: translateY(-3px);
+            border-color: #d1d5db;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode .cert-card {
+            background-color: #18181b;
+            border: 1px solid #27272a;
+        }
+
+        body.dark-mode .cert-card:hover {
+            border-color: #3f3f46;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        .cert-provider {
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .cert-provider {
+            color: #fafafa;
+        }
+
+        .cert-name {
+            color: #374151;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .cert-name {
+            color: #d4d4d8;
+        }
+
+        /* Skills Section */
+        .skills-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .skills-category {
+            margin-bottom: 2rem;
+        }
+
+        .skills-category h3 {
+            color: #fafafa;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+        }
+
+        .skill-tag {
+            background-color: #18181b;
+            border: 1px solid #27272a;
+            color: #d4d4d8;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 600px;
+            margin: 2rem auto 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                gap: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+            }
+
+            .about-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .education-details {
+                flex-direction: column;
+                align-items: start;
+                gap: 1rem;
+            }
+
+            .contact-links {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle" title="Toggle Dark Mode">
+        <span id="themeIcon">🌙</span>
+    </button>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#about" class="nav-link active">About Me</a>
+            <a href="#projects" class="nav-link">Projects</a>
+            <a href="#education" class="nav-link">Education</a>
+            <a href="#current-role" class="nav-link">Current Role</a>
+            <a href="#certifications" class="nav-link">Certifications</a>
+            <a href="#contact" class="nav-link">Contact</a>
+        </div>
+    </nav>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <div class="section-content">
+                <div class="about-content">
+                    <img src="https://via.placeholder.com/250x250/18181b/fafafa?text=JE" alt="Jibin ES" class="profile-image">
+                    <div class="about-text">
+                        <h1>Jibin ES</h1>
+                        <p class="subtitle">Electronics & Computer Engineering Student | AI Enthusiast</p>
+                        <p>Passionate about artificial intelligence and electronic design automation, I'm currently working as a Generative AI Trainee at Karunya Innovation and Design Studio. I specialize in building AI-powered solutions, from legal document analysis systems to competitive programming assistants and automated circuit design tools.</p>
+                        <p>My work focuses on developing agentic AI systems that can automate complex workflows in various domains including EDA, research, and software development.</p>
+                        <div class="contact-links">
+                            <a href="tel:+918139002298" class="contact-link">📞 +91-8139002298</a>
+                            <a href="mailto:jibine@karunya.edu.in" class="contact-link">✉️ Email</a>
+                            <a href="https://www.linkedin.com/in/jibines" class="contact-link" target="_blank">💼 LinkedIn</a>
+                            <a href="#" class="contact-link" target="_blank">🔗 GitHub</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section">
+        <div class="container">
+            <div class="section-content">
+                <h2 class="section-title">Projects</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div class="project-header">
+                            <div>
+                                <h3 class="project-title">EDA Agent</h3>
+                                <span class="project-date">June 2025 - Ongoing</span>
+                            </div>
+                        </div>
+                        <p class="project-description">
+                            Developed an Agentic AI system for automating electronic circuit and PCB design—from schematic generation to component sourcing and fabrication. Integrated KiCad CLI tools and an SQLite-backed component database for automation.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Docker</span>
+                            <span class="tech-tag">KiCad</span>
+                            <span class="tech-tag">SQLite</span>
+                            <span class="tech-tag">Streamlit</span>
+                            <span class="tech-tag">llama.cpp</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-header">
+                            <div>
+                                <h3 class="project-title">AI Research Agent</h3>
+                                <span class="project-date">June 2025 - Ongoing</span>
+                            </div>
+                        </div>
+                        <p class="project-description">
+                            Created an AI research automation pipeline for literature reviews, experiment planning, and full paper generation with citations. Used FAISS, llama.cpp, and PDF parsers to build a multi-agent research workflow.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">FAISS</span>
+                            <span class="tech-tag">Streamlit</span>
+                            <span class="tech-tag">llama.cpp</span>
+                            <span class="tech-tag">PyMuPDF</span>
+                            <span class="tech-tag">SQLite</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-header">
+                            <div>
+                                <h3 class="project-title">CodeTrek.AI</h3>
+                                <span class="project-date">April 2025</span>
+                            </div>
+                        </div>
+                        <p class="project-description">
+                            Built a competitive programming chatbot using Qwen 2.5 Coder 7B and Django to generate coding problems and evaluate user-submitted solutions. Designed user interface with ReactJS and integrated a real-time code checker.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Django</span>
+                            <span class="tech-tag">ReactJS</span>
+                            <span class="tech-tag">Qwen 2.5 Coder</span>
+                            <span class="tech-tag">Streamlit</span>
+                            <span class="tech-tag">Docker</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-header">
+                            <div>
+                                <h3 class="project-title">Multi-user RAG Chatbot</h3>
+                                <span class="project-date">March 2025</span>
+                            </div>
+                        </div>
+                        <p class="project-description">
+                            Developed a chatbot using Mistral 7B and FAISS to answer context-aware questions from uploaded PDFs. Backend handles user sessions, chunking, retrieval, and dynamic response generation.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Django</span>
+                            <span class="tech-tag">FAISS</span>
+                            <span class="tech-tag">Mistral 7B</span>
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Streamlit</span>
+                            <span class="tech-tag">Docker</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-header">
+                            <div>
+                                <h3 class="project-title">Legal.AI</h3>
+                                <span class="project-date">March 2025</span>
+                            </div>
+                        </div>
+                        <p class="project-description">
+                            Built a legal assistant chatbot for summarizing legal documents and retrieving precedent cases. Integrated FAISS-based semantic search and prompt engineering for legal accuracy.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">FAISS</span>
+                            <span class="tech-tag">llama.cpp</span>
+                            <span class="tech-tag">Streamlit</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="section">
+        <div class="container">
+            <div class="section-content">
+                <h2 class="section-title">Education</h2>
+                <div class="education-timeline">
+                    <div class="education-item">
+                        <h3 class="education-title">Bachelor of Technology - Electronics and Computer Engineering</h3>
+                        <p class="education-institution">Karunya Institute of Technology and Sciences, Coimbatore</p>
+                        <div class="education-details">
+                            <span class="education-year">2023 - 2027</span>
+                            <span class="education-score">CGPA: 8.7</span>
+                        </div>
+                    </div>
+                    <div class="education-item">
+                        <h3 class="education-title">Higher Secondary Education</h3>
+                        <p class="education-institution">CBSE Board</p>
+                        <div class="education-details">
+                            <span class="education-year">2022</span>
+                            <span class="education-score">71%</span>
+                        </div>
+                    </div>
+                    <div class="education-item">
+                        <h3 class="education-title">Secondary Education</h3>
+                        <p class="education-institution">CBSE Board</p>
+                        <div class="education-details">
+                            <span class="education-year">2020</span>
+                            <span class="education-score">91%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Current Role Section -->
+    <section id="current-role" class="section">
+        <div class="container">
+            <div class="section-content">
+                <h2 class="section-title">Current Role</h2>
+                <div class="role-card">
+                    <h3 class="role-title">Generative AI Trainee</h3>
+                    <p class="role-company">Karunya Innovation and Design Studio (KIDS)</p>
+                    <p class="role-period">January 2025 - Present | Coimbatore, India</p>
+                    <div class="role-description">
+                        <p>Gained hands-on experience with various open-source generative models and agentic AI systems. Developed multiple projects including an AI-powered voice chatbot for legal case analysis (Legal.AI), a multi-user RAG system with document upload support, and a competitive programming assistant chatbot (CodeTrek.AI) using Qwen 2.5 Coder 7B.</p>
+                        <p>Built advanced AI agents for automated electronic circuit design (EDA Agent) and research workflow automation (AI Research Agent), focusing on creating practical AI solutions for real-world applications.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certifications Section -->
+    <section id="certifications" class="section">
+        <div class="container">
+            <div class="section-content">
+                <h2 class="section-title">Certifications</h2>
+                <div class="certifications-grid">
+                    <div class="cert-card">
+                        <div class="cert-provider">CISCO</div>
+                        <div class="cert-name">Python Essentials</div>
+                    </div>
+                    <div class="cert-card">
+                        <div class="cert-provider">CISCO</div>
+                        <div class="cert-name">Programming Essentials in C</div>
+                    </div>
+                    <div class="cert-card">
+                        <div class="cert-provider">Linux Foundation</div>
+                        <div class="cert-name">Introduction to Linux</div>
+                    </div>
+                    <div class="cert-card">
+                        <div class="cert-provider">Infosys</div>
+                        <div class="cert-name">JAVA Programming Fundamentals</div>
+                    </div>
+                </div>
+                
+                <div class="skills-container" style="margin-top: 4rem;">
+                    <div class="skills-category">
+                        <h3>Programming Languages</h3>
+                        <div class="skills-list">
+                            <span class="skill-tag">C</span>
+                            <span class="skill-tag">Python</span>
+                            <span class="skill-tag">Java</span>
+                        </div>
+                    </div>
+                    <div class="skills-category">
+                        <h3>Tools & Operating Systems</h3>
+                        <div class="skills-list">
+                            <span class="skill-tag">Git</span>
+                            <span class="skill-tag">Google Colab</span>
+                            <span class="skill-tag">Linux</span>
+                            <span class="skill-tag">Windows</span>
+                        </div>
+                    </div>
+                    <div class="skills-category">
+                        <h3>Libraries & Frameworks</h3>
+                        <div class="skills-list">
+                            <span class="skill-tag">Pandas</span>
+                            <span class="skill-tag">TensorFlow</span>
+                            <span class="skill-tag">Langchain</span>
+                            <span class="skill-tag">Django</span>
+                            <span class="skill-tag">ReactJS</span>
+                        </div>
+                    </div>
+                    <div class="skills-category">
+                        <h3>Web Technologies</h3>
+                        <div class="skills-list">
+                            <span class="skill-tag">HTML</span>
+                            <span class="skill-tag">CSS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section contact-section">
+        <div class="container">
+            <div class="section-content">
+                <h2 class="section-title">Get In Touch</h2>
+                <p style="color: #6b7280; font-size: 1.1rem; margin-bottom: 2rem; transition: color 0.3s ease;">Let's connect and discuss opportunities in AI and technology.</p>
+                <div class="contact-grid">
+                    <a href="tel:+918139002298" class="contact-link">📞 Call</a>
+                    <a href="mailto:jibine@karunya.edu.in" class="contact-link">✉️ Email</a>
+                    <a href="https://www.linkedin.com/in/jibines" class="contact-link" target="_blank">💼 LinkedIn</a>
+                    <a href="#" class="contact-link" target="_blank">🔗 GitHub</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const body = document.body;
+
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        
+        if (currentTheme === 'dark') {
+            body.classList.add('dark-mode');
+            themeIcon.textContent = '☀️';
+        } else {
+            themeIcon.textContent = '🌙';
+        }
+
+        themeToggle.addEventListener('click', function() {
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                themeIcon.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        // Smooth scroll navigation with active state
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.section');
+
+            // Handle navigation clicks
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetSection = document.getElementById(targetId);
+                    
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Update active navigation on scroll
+            function updateActiveNav() {
+                let current = '';
+                const scrollPosition = window.scrollY + 100;
+
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.offsetHeight;
+                    
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + current) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            // Listen for scroll events
+            window.addEventListener('scroll', updateActiveNav);
+            
+            // Set initial active state
+            updateActiveNav();
+        });
+
+        // Add CSS for dark mode contact text
+        const style = document.createElement('style');
+        style.textContent = `
+            body.dark-mode #contact p {
+                color: #a1a1aa !important;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
